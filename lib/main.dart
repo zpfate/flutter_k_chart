@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_k_chart/root_logic.dart';
 import 'package:flutter_k_chart/zl_line_chart/zp_line_chart.dart';
 import 'package:flutter_k_chart/zl_line_chart/zp_line_style.dart';
 import 'package:get/get.dart';
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'ZPLine'),
     );
   }
 }
@@ -58,72 +59,47 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  final rootLogic = Get.put(RootLogic());
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
+
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            const SizedBox(height: 100,),
           SizedBox(
           height: 183,
           width: Get.width - 40,
           child: ZpLineChart(
             start:  "2022-2-10",
             end:  "2024-2-10",
-            gridStyle: GridStyle(
+            gridStyle: const GridStyle(
                 show: true,
                 color: Colors.lightGreen,
                 width: 0.5
             ),
-            max: 0.97,
-            min: 0.01,
-            maxAmount: 10000,
-            minAmount: 100,
-            // labelStyle: LabelStyle(textStyle: BaseStyle.normal(11, EBColors.textC3)),
+            max: 100,
+            min: 0,
+            maxAmount: 100,
+            minAmount: 0,
+            labelStyle: const LabelStyle(textStyle: TextStyle(color: Colors.red)),
             data: [
-
+              rootLogic.line1,
+              rootLogic.line2
             ],
           ),
           )
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
